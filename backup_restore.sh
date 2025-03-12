@@ -25,6 +25,10 @@ create_backup() {
     if [ $? -eq 0 ]; then
         log_action "Backup created: $BACKUP_FILE"
         echo "Backup successful! Stored at: $BACKUP_FILE"
+
+	 # Delete backups older than 7 days
+        find "$BACKUP_DIR" -type f -name "system_backup_*.tar.gz" -mtime +7 -exec rm {} \;
+        log_action "Deleted old backups older than 7 days."
     else
         log_action "Backup failed."
         echo "Error: Backup failed!"
